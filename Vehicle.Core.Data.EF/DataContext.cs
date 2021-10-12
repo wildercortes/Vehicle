@@ -1,18 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
+using Vehicle.Entities;
 
 namespace Vehicle.Core.Data.EF
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
 
+        #region DbSets
+        public DbSet<Brand> Brands { get; set; }
+
+        //public DbSet<Detail> Details { get; set; }
+
+        //public DbSet<DocumentType> DocumentTypes { get; set; }
+
+        //public DbSet<History> Histories { get; set; }
+
+        //public DbSet<Procedure> Procedures { get; set; }
+
+        //public DbSet<Entities.Vehicle> Vehicles { get; set; }
+
+        //public DbSet<VehiclePhoto> VehiclePhotos { get; set; }
+
+        //public DbSet<VehicleType> VehicleTypes { get; set; }
+        #endregion
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);     
+            base.OnModelCreating(modelBuilder);
+            ConfigureEntities(modelBuilder);
         }
 
         private void ConfigureEntities(ModelBuilder modelBuilder)

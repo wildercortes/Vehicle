@@ -33,8 +33,8 @@ namespace Vehicle.Presentation.API
             VersioningConfiguration(services);
 
             services.AddDbContext<DataContext>(options => options
-                .UseSqlServer(Configuration.GetConnectionString("Sql"),
-                opt => opt.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds)));
+               .UseSqlServer(Configuration.GetConnectionString("Sql"),
+               opt => opt.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds)));
 
             services.AddControllers();
 

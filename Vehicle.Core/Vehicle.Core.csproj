@@ -13,4 +13,9 @@
     <PackageReference Include="Serilog" Version="2.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Vehicle.Core.Data.EF\Vehicle.Core.Data.EF.csproj" />
+    <ProjectReference Include="..\Vehicle.Core.Data\Vehicle.Core.Data.csproj" />
+  </ItemGroup>
+
 </Project>
