@@ -14,6 +14,7 @@ using System.Reflection;
 using Vehicle.Core.Data.EF;
 using Vehicle.Presentation.API.bootstrapping;
 using Vehicle.Presentation.API.Helpers;
+using Vehicle.Presentation.API.Middlewares;
 
 namespace Vehicle.Presentation.API
 {
@@ -25,6 +26,7 @@ namespace Vehicle.Presentation.API
         }
 
         public IConfiguration Configuration { get; }
+        private const string corsPolicyName = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,6 +37,15 @@ namespace Vehicle.Presentation.API
             services.AddDbContext<DataContext>(options => options
                .UseSqlServer(Configuration.GetConnectionString("Sql"),
                opt => opt.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds)));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicyName,
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
 
             services.AddControllers();
 
@@ -69,12 +80,16 @@ namespace Vehicle.Presentation.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(corsPolicyName);
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
+            app.UseAuthentication();
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {

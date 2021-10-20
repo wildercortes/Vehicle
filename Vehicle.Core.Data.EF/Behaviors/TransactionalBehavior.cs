@@ -11,12 +11,12 @@ namespace Vehicle.Core.Data.EF.Behaviors
     public class TransactionalBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly DataContext dataContext;
-        private readonly ILogger logger;
+        //private readonly ILogger logger;
 
         public TransactionalBehavior(DataContext dataContext, IIndex<string, ILogger> loggerIndex)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.logger = loggerIndex[LoggerConstants.apiLoggerName];
+            //this.logger = loggerIndex[LoggerConstants.apiLoggerName];
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
@@ -31,7 +31,7 @@ namespace Vehicle.Core.Data.EF.Behaviors
             }
             catch (Exception Ex)
             {
-                logger.Error("Error al guardar: " + Ex.InnerException);
+                //logger.Error("Error al guardar: " + Ex.InnerException);
                 throw;
             }
             return response;
